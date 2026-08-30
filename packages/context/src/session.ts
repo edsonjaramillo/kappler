@@ -4,22 +4,22 @@ import { create } from "zustand";
 export type SessionContext = ReturnType<typeof createSessionStore>;
 
 export interface SessionUser {
-	name: string;
+  name: string;
 }
 
 interface AuthenticatedState {
-	user: SessionUser;
-	isAuthenticated: true;
+  user: SessionUser;
+  isAuthenticated: true;
 }
 
 interface UnauthenticatedState {
-	user: undefined;
-	isAuthenticated: false;
+  user: undefined;
+  isAuthenticated: false;
 }
 
 interface Actions {
-	setSession: (user: SessionUser) => void;
-	clearSession: () => void;
+  setSession: (user: SessionUser) => void;
+  clearSession: () => void;
 }
 
 type State = AuthenticatedState | UnauthenticatedState;
@@ -27,14 +27,14 @@ type State = AuthenticatedState | UnauthenticatedState;
 export type SessionStore = State & Actions;
 
 export function createSessionStore(): UseBoundStore<StoreApi<SessionStore>> {
-	return create<SessionStore>((set) => ({
-		user: undefined,
-		isAuthenticated: false,
-		setSession(user) {
-			set({ user, isAuthenticated: true });
-		},
-		clearSession() {
-			set({ user: undefined, isAuthenticated: false });
-		},
-	}));
+  return create<SessionStore>((set) => ({
+    user: undefined,
+    isAuthenticated: false,
+    setSession(user) {
+      set({ user, isAuthenticated: true });
+    },
+    clearSession() {
+      set({ user: undefined, isAuthenticated: false });
+    },
+  }));
 }

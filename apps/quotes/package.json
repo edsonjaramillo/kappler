@@ -1,51 +1,51 @@
 {
-	"$schema": "https://json.schemastore.org/package.json",
-	"name": "admin",
-	"private": true,
-	"type": "module",
-	"imports": {
-		"#/*": "./src/*"
-	},
-	"scripts": {
-		"clean": "rm -rf .output .nitro .tanstack",
-		"check-types": "tsgo --noEmit",
-		"build": "bun --bun vite build",
-		"dev": "infisical run -- bun --bun vite dev --port 3000",
-		"preview": "infisical run -- bun --bun vite preview",
-		"start": "bun --bun vite start",
-		"format": "oxfmt .",
-		"format:check": "oxfmt --check .",
-		"lint": "oxlint --type-aware --type-check src vite.config.ts --max-warnings 0",
-		"lint:fix": "oxlint --type-aware --type-check src vite.config.ts --fix"
-	},
-	"dependencies": {
-		"@hookform/resolvers": "catalog:",
-		"@repo/ui": "workspace:*",
-		"@tailwindcss/vite": "catalog:",
-		"@tanstack/react-devtools": "catalog:",
-		"@tanstack/react-router": "catalog:",
-		"@tanstack/react-router-devtools": "catalog:",
-		"@tanstack/react-start": "catalog:",
-		"@tanstack/router-plugin": "catalog:",
-		"@tanstack/zod-adapter": "catalog:",
-		"nitro": "catalog:",
-		"react": "catalog:",
-		"react-dom": "catalog:",
-		"react-hook-form": "catalog:",
-		"tailwindcss": "catalog:",
-		"zod": "catalog:"
-	},
-	"devDependencies": {
-		"@repo/config": "workspace:*",
-		"@tanstack/devtools-vite": "catalog:",
-		"@types/node": "catalog:",
-		"@types/react": "catalog:",
-		"@types/react-dom": "catalog:",
-		"@vitejs/plugin-react": "catalog:",
-		"oxfmt": "catalog:",
-		"oxlint": "catalog:",
-		"oxlint-tsgolint": "catalog:",
-		"typescript": "^7.0.1-rc",
-		"vite": "catalog:"
-	}
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "admin",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "clean": "rm -rf .output .nitro .tanstack",
+    "check-types": "tsgo --noEmit",
+    "build": "bun --bun vite build",
+    "dev": "infisical run -- bun --bun vite dev --port 3000",
+    "preview": "infisical run -- bun --bun vite preview",
+    "start": "bun --bun vite start",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint --type-aware --type-check src vite.config.ts --max-warnings 0",
+    "lint:fix": "oxlint --type-aware --type-check src vite.config.ts --fix"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "catalog:",
+    "@repo/ui": "workspace:*",
+    "@tailwindcss/vite": "catalog:",
+    "@tanstack/react-devtools": "catalog:",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/react-router-devtools": "catalog:",
+    "@tanstack/react-start": "catalog:",
+    "@tanstack/router-plugin": "catalog:",
+    "@tanstack/zod-adapter": "catalog:",
+    "nitro": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-hook-form": "catalog:",
+    "tailwindcss": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@repo/config": "workspace:*",
+    "@tanstack/devtools-vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "typescript": "^7.0.1-rc",
+    "vite": "catalog:"
+  }
 }
