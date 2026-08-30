@@ -7,7 +7,6 @@
 	"exports": {
 		"./oxlint/library.json": "./oxlint/library.json",
 		"./oxlint/react.json": "./oxlint/react.json",
-		"./typescript/fastify.json": "./typescript/fastify.json",
 		"./typescript/library.json": "./typescript/library.json",
 		"./typescript/react-library.json": "./typescript/react-library.json",
 		"./typescript/tanstack-start.json": "./typescript/tanstack-start.json"
