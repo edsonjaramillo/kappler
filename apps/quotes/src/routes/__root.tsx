@@ -3,8 +3,6 @@ import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import { Desktop } from "#/components/admin-desktop";
-
 import adminCss from "../admin.css?url";
 
 export const Route = createRootRoute({
@@ -27,7 +25,6 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="relative">
-        <Desktop />
         {children}
         <TanStackDevtools
           config={{ position: "bottom-right" }}
