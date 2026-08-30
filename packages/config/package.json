@@ -1,0 +1,26 @@
+{
+	"$schema": "https://json.schemastore.org/package.json",
+	"name": "@repo/config",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./oxlint/library.json": "./oxlint/library.json",
+		"./oxlint/react.json": "./oxlint/react.json",
+		"./typescript/fastify.json": "./typescript/fastify.json",
+		"./typescript/library.json": "./typescript/library.json",
+		"./typescript/react-library.json": "./typescript/react-library.json",
+		"./typescript/tanstack-start.json": "./typescript/tanstack-start.json"
+	},
+	"scripts": {
+		"format": "oxfmt oxlint package.json typescript",
+		"format:check": "oxfmt --check oxlint package.json typescript"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"oxfmt": "catalog:",
+		"oxlint": "catalog:",
+		"oxlint-tsgolint": "catalog:",
+		"typescript": "catalog:"
+	}
+}

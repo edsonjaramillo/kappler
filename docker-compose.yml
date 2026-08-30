@@ -1,0 +1,17 @@
+name: tuborepo-example
+volumes:
+  postgres_data:
+services:
+  postgres:
+    hostname: turborepo-example-postgres
+    container_name: turborepo-example-postgres
+    image: postgres:19beta1-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    restart: unless-stopped

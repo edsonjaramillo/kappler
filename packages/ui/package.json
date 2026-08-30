@@ -1,0 +1,45 @@
+{
+	"$schema": "https://json.schemastore.org/package.json",
+	"name": "@repo/ui",
+	"version": "0.0.0",
+	"private": true,
+	"exports": {
+		"./button": "./src/button.tsx",
+		"./cn": "./src/lib/cn.ts",
+		"./error-component": "./src/error-component.tsx",
+		"./form": "./src/form.tsx",
+		"./inputs": "./src/inputs.tsx",
+		"./not-found": "./src/not-found.tsx",
+		"./skeleton": "./src/skeleton.tsx",
+		"./text": "./src/text.tsx",
+		"./theme.css": "./src/theme.css"
+	},
+	"scripts": {
+		"check-types": "tsgo --noEmit",
+		"format": "oxfmt .",
+		"format:check": "oxfmt --check .",
+		"lint": "oxlint --type-aware --type-check src --max-warnings 0",
+		"lint:fix": "oxlint --type-aware --type-check src --fix"
+	},
+	"dependencies": {
+		"@repo/context": "workspace:*",
+		"@tanstack/react-router": "catalog:",
+		"class-variance-authority": "^0.7.1",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"react-hook-form": "catalog:",
+		"tailwind-merge": "^3.6.0",
+		"tailwindcss": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@repo/config": "workspace:*",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"oxfmt": "catalog:",
+		"oxlint": "catalog:",
+		"oxlint-tsgolint": "catalog:",
+		"typescript": "catalog:"
+	}
+}
