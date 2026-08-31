@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@repo/email",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "check-types": "tsgo --noEmit",
+    "dev": "email dev",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "lint": "oxlint --type-aware --type-check emails --max-warnings 0",
+    "lint:fix": "oxlint --type-aware --type-check emails --fix"
+  },
+  "dependencies": {
+    "@repo/data": "workspace:*",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-email": "^6.9.3",
+    "react-hook-form": "catalog:",
+    "tailwindcss": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@react-email/ui": "^6.9.3",
+    "@repo/config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "oxlint-tsgolint": "catalog:",
+    "typescript": "catalog:"
+  }
+}
