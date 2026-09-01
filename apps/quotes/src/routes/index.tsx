@@ -18,16 +18,6 @@ type SendQuoteInput = z.infer<typeof sendQuoteSchema>;
 const sendQuote = createServerFn({ method: "POST" })
   .validator(sendQuoteSchema)
   .handler(async ({ data }) => {
-    console.info("[send-quote] Raw production environment configuration", {
-      NODE_ENV: process.env.NODE_ENV,
-      QUOTE_EMAIL_FROM: process.env.QUOTE_EMAIL_FROM,
-      QUOTE_JWT_ENCRYPTION_KEY: process.env.QUOTE_JWT_ENCRYPTION_KEY,
-      QUOTE_PUBLIC_APP_URL: process.env.QUOTE_PUBLIC_APP_URL,
-      QUOTE_RESPONSE_EMAIL: process.env.QUOTE_RESPONSE_EMAIL,
-      RESEND_API_KEY: process.env.RESEND_API_KEY,
-      RESEND_BASE_URL: process.env.RESEND_BASE_URL,
-    });
-
     try {
       const { sendQuoteEmail } = await import("#/server/quote-service.server");
       const result = await sendQuoteEmail(data);
