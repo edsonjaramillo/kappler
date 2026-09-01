@@ -46,20 +46,20 @@ export const exampleQuote: Quote = {
     {
       product: "99402YW",
       description: "Chemical Tape",
-      price: 1000,
-      quantity: 1,
+      price: 1088.02,
+      quantity: 2,
     },
     {
-      product: "Z5H400",
-      description: "Hazmat Suit",
-      price: 2000,
+      product: "F5H582SILGXL91",
+      description: "Frontline 500 NFPA 1990",
+      price: 3357.96,
       quantity: 4,
     },
 
     {
-      product: "Z3H240",
-      description: "Hazmat Suit (Level B)",
-      price: 1500,
+      product: "D2H440HYSMMD9212",
+      description: "DuraChem 200 NFPA 1990",
+      price: 1284.07,
       quantity: 8,
     },
   ],

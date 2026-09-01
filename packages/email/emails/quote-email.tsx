@@ -8,6 +8,7 @@ import {
   Heading,
   Hr,
   Html,
+  Img,
   Preview,
   Row,
   Section,
@@ -61,19 +62,13 @@ export default function QuoteEmail({ quote, actionUrls }: QuoteEmailProps) {
       </Preview>
       <Tailwind>
         <Body className="m-0 bg-slate-100 px-3 py-8 font-sans text-slate-700">
-          <Container className="mx-auto max-w-[640px] bg-white">
-            <Section className="bg-[#071b33] px-8 py-7">
-              <Row>
-                <Column className="align-middle">
-                  <Text className="m-0 inline-block border border-dashed border-slate-400 px-4 py-3 text-xs font-bold tracking-[2px] text-white">
-                    LOGO GOES HERE
-                  </Text>
-                </Column>
-                <Column className="align-middle text-right">
-                  <Text className="m-0 text-sm font-semibold text-white">YOUR COMPANY</Text>
-                  <Text className="m-0 mt-1 text-xs text-slate-300">Quotes made simple</Text>
-                </Column>
-              </Row>
+          <Container className="mx-auto max-w-[700px] bg-white">
+            <Section className="bg-[#071b33] px-8 py-4 text-center">
+              <Img
+                src="https://www.kappler.com/wp-content/themes/pic-kap/public/build/assets/kappler-50-logo-footer-CLrnvSrL.webp"
+                alt="Kappler"
+                className="mx-auto h-24 w-auto"
+              />
             </Section>
             <Section className="px-8 pb-3 pt-8">
               <Text className="m-0 text-xs font-bold uppercase tracking-[2px] text-blue-700">
