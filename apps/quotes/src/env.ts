@@ -24,6 +24,7 @@ export const envSchema = z.object({
   RESEND_API_KEY: z.string().startsWith("re_"),
   QUOTE_EMAIL_FROM: z.email(),
   QUOTE_PUBLIC_APP_URL: z.url().refine((value) => {
+    if (!URL.canParse(value)) return true;
     const url = new URL(value);
     return url.protocol === "https:" || url.hostname === "localhost";
   }, "QUOTE_PUBLIC_APP_URL must use HTTPS (except on localhost)"),
