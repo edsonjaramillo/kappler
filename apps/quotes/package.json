@@ -10,7 +10,7 @@
     "clean": "rm -rf .output .nitro .tanstack",
     "check-types": "tsgo --noEmit",
     "build": "bun --bun vite build",
-    "dev": "infisical run --projectId=4bc06c11-1fe4-44be-b7cc-00e9aad2986b --env=dev -- bun --bun vite dev --port 3001",
+    "dev": "infisical run --projectId=4bc06c11-1fe4-44be-b7cc-00e9aad2986b --env=prod -- bun --bun vite dev --port 3001",
     "preview": "infisical run -- bun --bun vite preview",
     "start": "infisical run --projectId=4bc06c11-1fe4-44be-b7cc-00e9aad2986b --env=dev -- bun --bun vite start",
     "test": "bun test",
