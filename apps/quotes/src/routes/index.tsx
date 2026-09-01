@@ -9,6 +9,7 @@ import { z } from "zod";
 
 const sendQuoteSchema = z.object({
   quoteId: z.string().regex(/^SQN\d+$/u),
+  purchaserName: z.string().trim().min(1, "Enter the purchaser's name"),
   email: z.string().trim().toLowerCase().pipe(z.email("Enter a valid email address")),
 });
 
@@ -63,7 +64,11 @@ function Home() {
     formState: { errors, isSubmitting },
   } = useForm<SendQuoteInput>({
     resolver: zodResolver(sendQuoteSchema),
-    defaultValues: { quoteId: exampleQuote.id, email: exampleQuote.purchaserEmail },
+    defaultValues: {
+      quoteId: exampleQuote.id,
+      purchaserName: exampleQuote.purchaserName,
+      email: exampleQuote.purchaserEmail,
+    },
   });
 
   const total = exampleQuote.lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -151,11 +156,25 @@ function Home() {
         <aside className="rounded-xl shadow-sm h-fit bg-white p-6">
           <h2 className="text-slate-950 text-xl font-bold">Send example quote</h2>
           <p className="text-slate-600 mt-2 text-sm leading-6">
-            Enter the email address that should receive this quote and its secure response links.
+            Enter the purchaser who should receive this quote and its secure response links.
           </p>
           <form className="mt-6" onSubmit={onSubmit} noValidate>
             <input type="hidden" {...register("quoteId")} />
-            <label className="text-slate-800 text-sm font-semibold" htmlFor="email">
+            <label className="text-slate-800 text-sm font-semibold" htmlFor="purchaserName">
+              Purchaser name
+            </label>
+            <input
+              id="purchaserName"
+              type="text"
+              autoComplete="name"
+              aria-invalid={Boolean(errors.purchaserName)}
+              className="rounded-md border-slate-300 focus:border-blue-600 focus:ring-blue-100 mt-2 w-full border px-3 py-2 outline-none focus:ring-2"
+              {...register("purchaserName")}
+            />
+            {errors.purchaserName && (
+              <p className="text-red-600 mt-2 text-sm">{errors.purchaserName.message}</p>
+            )}
+            <label className="text-slate-800 mt-4 block text-sm font-semibold" htmlFor="email">
               Recipient email
             </label>
             <input

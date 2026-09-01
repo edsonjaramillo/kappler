@@ -34,8 +34,12 @@ async function createResponseUrl(quoteId: string, action: QuoteAction, returnEma
   return url.toString();
 }
 
-export async function sendQuoteEmail(input: { quoteId: string; email: string }) {
-  const quote = findQuote(input.quoteId);
+export async function sendQuoteEmail(input: {
+  quoteId: string;
+  purchaserName: string;
+  email: string;
+}) {
+  const quote = { ...findQuote(input.quoteId), purchaserName: input.purchaserName };
   const email = destinationEmailSchema.parse(input.email);
   const env = getEnv();
   const responseEmail = destinationEmailSchema.parse(env.QUOTE_EMAIL_FROM);
