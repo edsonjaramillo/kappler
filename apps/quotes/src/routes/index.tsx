@@ -17,8 +17,25 @@ type SendQuoteInput = z.infer<typeof sendQuoteSchema>;
 const sendQuote = createServerFn({ method: "POST" })
   .validator(sendQuoteSchema)
   .handler(async ({ data }) => {
-    const { sendQuoteEmail } = await import("#/server/quote-service.server");
-    return sendQuoteEmail(data);
+    try {
+      const { sendQuoteEmail } = await import("#/server/quote-service.server");
+      const result = await sendQuoteEmail(data);
+      return { ok: true as const, ...result };
+    } catch (error) {
+      const errorId = crypto.randomUUID();
+      console.error(`[send-quote:${errorId}] Quote ${data.quoteId} could not be sent`, error);
+
+      const message =
+        error instanceof z.ZodError
+          ? error.issues
+              .map((issue) => `${issue.path.join(".") || "configuration"}: ${issue.message}`)
+              .join("; ")
+          : error instanceof Error
+            ? error.message
+            : "The server returned an unknown error";
+
+      return { ok: false as const, errorId, message };
+    }
   });
 
 export const Route = createFileRoute("/")({ component: Home });
@@ -27,7 +44,9 @@ const currency = new Intl.NumberFormat("en-US", { style: "currency", currency: "
 
 function Home() {
   const sendQuoteFn = useServerFn(sendQuote);
-  const [result, setResult] = useState<"idle" | "sent" | "error">("idle");
+  const [result, setResult] = useState<
+    { status: "idle" | "sent" } | { status: "error"; message: string; errorId?: string }
+  >({ status: "idle" });
   const {
     register,
     handleSubmit,
@@ -40,12 +59,22 @@ function Home() {
   const total = exampleQuote.lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const onSubmit = handleSubmit(async (data) => {
-    setResult("idle");
+    setResult({ status: "idle" });
     try {
-      await sendQuoteFn({ data });
-      setResult("sent");
-    } catch {
-      setResult("error");
+      const response = await sendQuoteFn({ data });
+      setResult(
+        response.ok
+          ? { status: "sent" }
+          : { status: "error", message: response.message, errorId: response.errorId },
+      );
+    } catch (error) {
+      setResult({
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "The request failed before the server returned a response",
+      });
     }
   });
 
@@ -131,13 +160,18 @@ function Home() {
             <Button className="mt-5" disabled={isSubmitting} type="submit" width="full">
               {isSubmitting ? "Sending…" : "Send quote"}
             </Button>
-            {result === "sent" && (
+            {result.status === "sent" && (
               <p className="text-green-700 mt-4 text-sm font-medium">Quote email sent.</p>
             )}
-            {result === "error" && (
-              <p className="text-red-700 mt-4 text-sm font-medium">
-                The quote could not be sent. Check the server configuration and try again.
-              </p>
+            {result.status === "error" && (
+              <div className="text-red-700 mt-4 text-sm" role="alert">
+                <p className="font-medium">The quote could not be sent: {result.message}</p>
+                {result.errorId !== undefined && (
+                  <p className="mt-1 text-xs">
+                    Error reference: <code>{result.errorId}</code>
+                  </p>
+                )}
+              </div>
             )}
           </form>
         </aside>
