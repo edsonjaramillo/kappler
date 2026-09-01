@@ -30,14 +30,8 @@ export const quoteTokenClaimsSchema = z.object({
 
 export type QuoteTokenClaims = z.infer<typeof quoteTokenClaimsSchema>;
 
-export type TokenKey = {
-  id: string;
-  key: Uint8Array;
-};
-
 export type TokenConfig = {
-  current: TokenKey;
-  previous?: TokenKey;
+  key: Uint8Array;
   now?: Date;
 };
 
@@ -48,24 +42,8 @@ function decodeKey(value: string) {
 function getTokenConfig(): TokenConfig {
   const env = getEnv();
   return {
-    current: {
-      id: env.QUOTE_JWT_KEY_ID,
-      key: decodeKey(env.QUOTE_JWT_ENCRYPTION_KEY),
-    },
-    previous:
-      env.QUOTE_JWT_PREVIOUS_KEY !== undefined && env.QUOTE_JWT_PREVIOUS_KEY_ID !== undefined
-        ? {
-            id: env.QUOTE_JWT_PREVIOUS_KEY_ID,
-            key: decodeKey(env.QUOTE_JWT_PREVIOUS_KEY),
-          }
-        : undefined,
+    key: decodeKey(env.QUOTE_JWT_ENCRYPTION_KEY),
   };
-}
-
-function getKey(config: TokenConfig, keyId: string | undefined) {
-  if (keyId === config.current.id) return config.current.key;
-  if (config.previous && keyId === config.previous.id) return config.previous.key;
-  throw new Error("Unknown quote token key");
 }
 
 export async function createQuoteToken(
@@ -89,22 +67,22 @@ export async function createQuoteToken(
     returnEmail: claims.returnEmail,
     jti: claims.jti,
   })
-    .setProtectedHeader({ alg: ALGORITHM, enc: ENCRYPTION, kid: config.current.id })
+    .setProtectedHeader({ alg: ALGORITHM, enc: ENCRYPTION })
     .setIssuedAt(claims.iat)
     .setExpirationTime(claims.exp)
     .setIssuer(ISSUER)
     .setAudience(AUDIENCE)
-    .encrypt(config.current.key);
+    .encrypt(config.key);
   return token;
 }
 
 export async function verifyQuoteToken(token: string, config = getTokenConfig()) {
   const header = decodeProtectedHeader(token);
-  if (header.alg !== ALGORITHM || header.enc !== ENCRYPTION || typeof header.kid !== "string") {
+  if (header.alg !== ALGORITHM || header.enc !== ENCRYPTION) {
     throw new Error("Invalid quote token header");
   }
 
-  const { payload, protectedHeader } = await jwtDecrypt(token, getKey(config, header.kid), {
+  const { payload, protectedHeader } = await jwtDecrypt(token, config.key, {
     issuer: ISSUER,
     audience: AUDIENCE,
     keyManagementAlgorithms: [ALGORITHM],
@@ -112,11 +90,7 @@ export async function verifyQuoteToken(token: string, config = getTokenConfig())
     currentDate: config.now,
   });
 
-  if (
-    protectedHeader.alg !== ALGORITHM ||
-    protectedHeader.enc !== ENCRYPTION ||
-    protectedHeader.kid !== header.kid
-  ) {
+  if (protectedHeader.alg !== ALGORITHM || protectedHeader.enc !== ENCRYPTION) {
     throw new Error("Invalid quote token header");
   }
 

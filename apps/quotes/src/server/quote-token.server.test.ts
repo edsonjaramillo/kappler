@@ -4,11 +4,10 @@ import { createQuoteToken, type TokenConfig, verifyQuoteToken } from "./quote-to
 
 const now = new Date("2026-09-01T00:00:00.000Z");
 const currentKey = new Uint8Array(32).fill(7);
-const previousKey = new Uint8Array(32).fill(9);
+const otherKey = new Uint8Array(32).fill(9);
 
 const config: TokenConfig = {
-  current: { id: "2026-09", key: currentKey },
-  previous: { id: "2026-08", key: previousKey },
+  key: currentKey,
   now,
 };
 
@@ -44,17 +43,10 @@ describe("encrypted quote tokens", () => {
     expect(verifyQuoteToken(token, futureConfig)).rejects.toThrow();
   });
 
-  test("accepts the previous rotation key and rejects it after retirement", async () => {
-    const previousConfig: TokenConfig = {
-      current: { id: "2026-08", key: previousKey },
-      now,
-    };
-    const oldToken = await createQuoteToken(input, previousConfig);
+  test("rejects a token created with a different key", async () => {
+    const token = await createQuoteToken(input, { key: otherKey, now });
 
-    expect(verifyQuoteToken(oldToken, config)).resolves.toMatchObject({
-      quoteId: input.quoteId,
-    });
-    expect(verifyQuoteToken(oldToken, { current: config.current, now })).rejects.toThrow();
+    expect(verifyQuoteToken(token, config)).rejects.toThrow();
   });
 
   test("rejects invalid quote IDs and email claims before encryption", () => {

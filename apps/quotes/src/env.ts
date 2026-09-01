@@ -20,23 +20,15 @@ const encodedEncryptionKeySchema = z
     "QUOTE_JWT_ENCRYPTION_KEY must decode to exactly 32 bytes (256 bits)",
   );
 
-export const envSchema = z
-  .object({
-    RESEND_API_KEY: z.string().startsWith("re_"),
-    QUOTE_EMAIL_FROM: z.email(),
-    QUOTE_PUBLIC_APP_URL: z.url().refine((value) => {
-      const url = new URL(value);
-      return url.protocol === "https:" || url.hostname === "localhost";
-    }, "QUOTE_PUBLIC_APP_URL must use HTTPS (except on localhost)"),
-    QUOTE_JWT_ENCRYPTION_KEY: encodedEncryptionKeySchema,
-    QUOTE_JWT_KEY_ID: z.string().min(1).default("current"),
-    QUOTE_JWT_PREVIOUS_KEY: encodedEncryptionKeySchema.optional(),
-    QUOTE_JWT_PREVIOUS_KEY_ID: z.string().min(1).optional(),
-  })
-  .refine(
-    (value) => Boolean(value.QUOTE_JWT_PREVIOUS_KEY) === Boolean(value.QUOTE_JWT_PREVIOUS_KEY_ID),
-    "QUOTE_JWT_PREVIOUS_KEY and QUOTE_JWT_PREVIOUS_KEY_ID must be set together",
-  );
+export const envSchema = z.object({
+  RESEND_API_KEY: z.string().startsWith("re_"),
+  QUOTE_EMAIL_FROM: z.email(),
+  QUOTE_PUBLIC_APP_URL: z.url().refine((value) => {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.hostname === "localhost";
+  }, "QUOTE_PUBLIC_APP_URL must use HTTPS (except on localhost)"),
+  QUOTE_JWT_ENCRYPTION_KEY: encodedEncryptionKeySchema,
+});
 
 let parsedEnv: z.infer<typeof envSchema> | undefined;
 
