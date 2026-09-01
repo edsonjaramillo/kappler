@@ -1,5 +1,4 @@
-// import type { Quote } from "@repo/data/quotes";
-import { exampleQuote as quote } from "@repo/data/quotes";
+import { exampleQuote, type Quote } from "@repo/data/quotes";
 import {
   Body,
   Button,
@@ -16,10 +15,16 @@ import {
   Text,
 } from "react-email";
 
-// type QuoteEmailProps = {
-// quote: Quote;
-// domain: string;
-// };
+export type QuoteActionUrls = {
+  extend: string;
+  alreadyOrdered: string;
+  cancel: string;
+};
+
+export type QuoteEmailProps = {
+  quote: Quote;
+  actionUrls: QuoteActionUrls;
+};
 
 const formatCurrency = (amount: number) =>
   new Intl.NumberFormat("en-US", {
@@ -27,22 +32,21 @@ const formatCurrency = (amount: number) =>
     currency: "USD",
   }).format(amount);
 
-export default function QuoteEmail() {
-  const domain = "http://localhost:3001";
+export default function QuoteEmail({ quote, actionUrls }: QuoteEmailProps) {
   const actionButtons = [
     {
       label: "Extend",
-      href: `${domain}/extend`,
+      href: actionUrls.extend,
       className: "bg-[#0b3768] text-white",
     },
     {
       label: "Already ordered",
-      href: `${domain}/ordered`,
+      href: actionUrls.alreadyOrdered,
       className: "border border-solid border-[#0b3768] bg-white text-[#0b3768]",
     },
     {
       label: "Close quote",
-      href: `${domain}/close`,
+      href: actionUrls.cancel,
       className: "bg-red-600 text-white",
     },
   ];
@@ -178,3 +182,12 @@ export default function QuoteEmail() {
     </Html>
   );
 }
+
+QuoteEmail.PreviewProps = {
+  quote: exampleQuote,
+  actionUrls: {
+    extend: "https://quotes.example.com/respond?token=preview-extend",
+    alreadyOrdered: "https://quotes.example.com/respond?token=preview-ordered",
+    cancel: "https://quotes.example.com/respond?token=preview-cancel",
+  },
+} satisfies QuoteEmailProps;

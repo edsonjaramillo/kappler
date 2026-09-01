@@ -30,7 +30,7 @@ export const exampleQuote: Quote = {
   id: "SQN0003001",
   creator: "EAJ",
   purchaserName: "Edson",
-  purchaserEmail: "ej@gmail.com",
+  purchaserEmail: "edsonajaramillo@gmail.com",
   validityDate: "9/20/26",
   customerId: "2032",
   companyName: "Safety Inc",

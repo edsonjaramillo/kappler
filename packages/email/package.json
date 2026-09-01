@@ -3,6 +3,9 @@
   "name": "@repo/email",
   "version": "0.0.0",
   "private": true,
+  "exports": {
+    "./quote-email": "./emails/quote-email.tsx"
+  },
   "scripts": {
     "check-types": "tsgo --noEmit",
     "dev": "email dev",

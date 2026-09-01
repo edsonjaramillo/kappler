@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForbiddenRouteImport } from './routes/forbidden'
+import { Route as RespondRouteImport } from './routes/respond'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +24,11 @@ const ForbiddenRoute = ForbiddenRouteImport.update({
   path: '/forbidden',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RespondRoute = RespondRouteImport.update({
+  id: '/respond',
+  path: '/respond',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
   path: '/unauthorized',
@@ -32,30 +38,34 @@ const UnauthorizedRoute = UnauthorizedRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/forbidden': typeof ForbiddenRoute
+  '/respond': typeof RespondRoute
   '/unauthorized': typeof UnauthorizedRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forbidden': typeof ForbiddenRoute
+  '/respond': typeof RespondRoute
   '/unauthorized': typeof UnauthorizedRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/forbidden': typeof ForbiddenRoute
+  '/respond': typeof RespondRoute
   '/unauthorized': typeof UnauthorizedRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/forbidden' | '/unauthorized'
+  fullPaths: '/' | '/forbidden' | '/respond' | '/unauthorized'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forbidden' | '/unauthorized'
-  id: '__root__' | '/' | '/forbidden' | '/unauthorized'
+  to: '/' | '/forbidden' | '/respond' | '/unauthorized'
+  id: '__root__' | '/' | '/forbidden' | '/respond' | '/unauthorized'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ForbiddenRoute: typeof ForbiddenRoute
+  RespondRoute: typeof RespondRoute
   UnauthorizedRoute: typeof UnauthorizedRoute
 }
 
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForbiddenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/respond': {
+      id: '/respond'
+      path: '/respond'
+      fullPath: '/respond'
+      preLoaderRoute: typeof RespondRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/unauthorized': {
       id: '/unauthorized'
       path: '/unauthorized'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ForbiddenRoute: ForbiddenRoute,
+  RespondRoute: RespondRoute,
   UnauthorizedRoute: UnauthorizedRoute,
 }
 export const routeTree = rootRouteImport
