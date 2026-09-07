@@ -42,11 +42,10 @@ export async function sendQuoteEmail(input: {
   const quote = { ...findQuote(input.quoteId), purchaserName: input.purchaserName };
   const email = destinationEmailSchema.parse(input.email);
   const env = getEnv();
-  const responseEmail = destinationEmailSchema.parse(env.QUOTE_EMAIL_FROM);
   const [extend, alreadyOrdered, cancel] = await Promise.all([
-    createResponseUrl(quote.id, "extend", responseEmail),
-    createResponseUrl(quote.id, "already_ordered", responseEmail),
-    createResponseUrl(quote.id, "cancel", responseEmail),
+    createResponseUrl(quote.id, "extend", email),
+    createResponseUrl(quote.id, "already_ordered", email),
+    createResponseUrl(quote.id, "cancel", email),
   ]);
 
   const resend = new Resend(env.RESEND_API_KEY);
@@ -86,7 +85,7 @@ async function sendResponseNotification(claims: QuoteTokenClaims) {
     from: env.QUOTE_EMAIL_FROM,
     to: "me@edsonjaramillo.com",
     subject: `Response received for quote ${claims.quoteId}`,
-    text: `The response “${actionLabels[claims.action]}” was recorded for quote ${claims.quoteId}.`,
+    text: `The response “${actionLabels[claims.action]}” was recorded for quote ${claims.quoteId}. The quote was originally sent to ${claims.returnEmail}.`,
   });
 
   if (error) throw new Error(`Unable to send response notification: ${error.message}`);
