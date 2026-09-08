@@ -59,9 +59,7 @@ function QuoteResponseConfirmation() {
   const { token } = Route.useSearch();
   const submitResponse = useServerFn(respondToQuote);
   const navigate = useNavigate();
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "already-completed">(
-    response.completed ? "already-completed" : "idle",
-  );
+  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
 
   const submit = async () => {
     setStatus("submitting");
@@ -73,7 +71,7 @@ function QuoteResponseConfirmation() {
     }
   };
 
-  const isComplete = status === "success" || status === "already-completed";
+  const isComplete = status === "success";
 
   return (
     <main className="bg-slate-100 min-h-screen px-4 py-16">
@@ -86,7 +84,7 @@ function QuoteResponseConfirmation() {
         </h1>
         <p className="text-slate-600 mt-4">
           {isComplete
-            ? `Your request to ${response.actionLabel} has already been recorded.`
+            ? `Your request to ${response.actionLabel} has been recorded.`
             : `Please confirm that you want to ${response.actionLabel} for ${response.companyName}.`}
         </p>
         {!isComplete && (

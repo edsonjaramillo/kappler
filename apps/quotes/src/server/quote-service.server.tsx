@@ -19,8 +19,6 @@ const actionLabels: Record<QuoteAction, string> = {
   cancel: "close this quote",
 };
 
-const completedResponses = new Map<string, QuoteAction>();
-
 function findQuote(quoteId: string) {
   const quote = quotes.find(({ id }) => id === quoteId);
   if (!quote) throw new Error("Quote not found");
@@ -34,13 +32,9 @@ async function createResponseUrl(quoteId: string, action: QuoteAction, returnEma
   return url.toString();
 }
 
-export async function sendQuoteEmail(input: {
-  quoteId: string;
-  purchaserName: string;
-  email: string;
-}) {
-  const quote = { ...findQuote(input.quoteId), purchaserName: input.purchaserName };
-  const email = destinationEmailSchema.parse(input.email);
+export async function sendQuoteEmail(input: { quoteId: string }) {
+  const quote = findQuote(input.quoteId);
+  const email = destinationEmailSchema.parse(quote.purchaserEmail);
   const env = getEnv();
   const [extend, alreadyOrdered, cancel] = await Promise.all([
     createResponseUrl(quote.id, "extend", email),
@@ -63,18 +57,11 @@ export async function sendQuoteEmail(input: {
 export async function getQuoteResponse(token: string) {
   const claims = await verifyQuoteToken(token);
   const quote = findQuote(claims.quoteId);
-  const completedAction = completedResponses.get(quote.id);
-
-  if (completedAction && completedAction !== claims.action) {
-    throw new Error("Quote already has a different response");
-  }
-
   return {
     quoteId: quote.id,
     companyName: quote.companyName,
     action: claims.action,
     actionLabel: actionLabels[claims.action],
-    completed: completedAction === claims.action,
   };
 }
 
@@ -94,23 +81,7 @@ async function sendResponseNotification(claims: QuoteTokenClaims) {
 export async function submitQuoteResponse(token: string) {
   const claims = await verifyQuoteToken(token);
   findQuote(claims.quoteId);
-
-  const completedAction = completedResponses.get(claims.quoteId);
-  if (completedAction) {
-    if (completedAction !== claims.action)
-      throw new Error("Quote already has a different response");
-    return { status: "already-completed" as const, action: claims.action };
-  }
-
-  // This sample has no quote database. Keep the mutation idempotent for this server process.
-  // Production should persist this transition atomically with the canonical quote record.
-  completedResponses.set(claims.quoteId, claims.action);
-  try {
-    await sendResponseNotification(claims);
-  } catch (error) {
-    completedResponses.delete(claims.quoteId);
-    throw error;
-  }
+  await sendResponseNotification(claims);
 
   return { status: "success" as const, action: claims.action };
 }
