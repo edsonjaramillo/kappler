@@ -7,17 +7,17 @@
   /* Color palettes (raw scales) */
 
   /* Primary */
-  --primary-50: oklch(96.4% 0.022 58.79);
-  --primary-100: oklch(92.9% 0.043 57.14);
-  --primary-200: oklch(86.33% 0.088 57.33);
-  --primary-300: oklch(80.1% 0.132 55.27);
-  --primary-400: oklch(74.61% 0.171 51.56);
-  --primary-500: oklch(69.96% 0.202 44.44);
-  --primary-600: oklch(59.48% 0.169 45.48);
-  --primary-700: oklch(48.38% 0.135 46.68);
-  --primary-800: oklch(36.61% 0.098 49.07);
-  --primary-900: oklch(23.64% 0.059 54.21);
-  --primary-950: oklch(16.68% 0.037 67.32);
+  --primary-50: #ecf9ff;
+  --primary-100: #d5f0ff;
+  --primary-200: #b5e7ff;
+  --primary-300: #81d9ff;
+  --primary-400: #47c3ff;
+  --primary-500: #1ca5ff;
+  --primary-600: #048bff;
+  --primary-700: #0078f7;
+  --primary-800: #065fc7;
+  --primary-900: #0c529c;
+  --primary-950: #071b33;
 
   /* Gray */
   --gray-50: oklch(98.5% 0.002 247.839);
@@ -87,7 +87,7 @@
   /* Semantic colors (used by UI components) */
 
   /* Brand */
-  --color-primary: var(--primary-500);
+  --color-primary: var(--primary-900);
   --color-primary-accent: var(--primary-50);
   --color-primary-hover: var(--primary-600);
   --color-primary-pressed: var(--primary-700);
